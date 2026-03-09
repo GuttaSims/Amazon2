@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Register</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+<script src="supabase.js"></script>
+
+</head>
+
+<body>
+
+<h1>Create Creator Account</h1>
+
+<input id="email" placeholder="Email">
+<br>
+
+<input id="password" type="password" placeholder="Password">
+<br>
+
+<input id="store" placeholder="Store Name">
+<br>
+
+<button onclick="register()">Register</button>
+
+<script>
+
+async function register(){
+
+let email = document.getElementById("email").value
+let password = document.getElementById("password").value
+let store = document.getElementById("store").value
+
+const { data, error } = await supabase.auth.signUp({
+email: email,
+password: password
+})
+
+if(error){
+alert(error.message)
+return
+}
+
+await supabase
+.from("creators")
+.insert({
+user_id: data.user.id,
+store_name: store
+})
+
+window.location="dashboard.html"
+
+}
+
+</script>
+
+</body>
+</html>
