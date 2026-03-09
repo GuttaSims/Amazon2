@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Edit Product</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+<script src="supabase.js"></script>
+
+</head>
+
+<body>
+
+<h1>Edit Product</h1>
+
+<input id="name">
+<br>
+
+<input id="price">
+<br>
+
+<input id="vendor">
+<br>
+
+<input id="display">
+<br>
+
+<button onclick="save()">Save</button>
+
+<script>
+
+let params = new URLSearchParams(window.location.search)
+let productID = params.get("id")
+
+async function load(){
+
+const { data } = await supabase
+.from("products")
+.select("*")
+.eq("id",productID)
+.single()
+
+document.getElementById("name").value = data.name
+document.getElementById("price").value = data.price
+document.getElementById("vendor").value = data.vendor_id
+document.getElementById("display").value = data.display_box
+
+}
+
+async function save(){
+
+let name = document.getElementById("name").value
+let price = document.getElementById("price").value
+let vendor = document.getElementById("vendor").value
+let display = document.getElementById("display").value
+
+await supabase
+.from("products")
+.update({
+name:name,
+price:price,
+vendor_id:vendor,
+display_box:display
+})
+.eq("id",productID)
+
+alert("Saved")
+
+}
+
+load()
+
+</script>
+
+</body>
+</html>
