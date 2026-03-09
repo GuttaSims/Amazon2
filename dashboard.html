@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Dashboard</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+<script src="supabase.js"></script>
+
+</head>
+
+<body>
+
+<h1>My Products</h1>
+
+<table border="1">
+
+<thead>
+
+<tr>
+<th>Name</th>
+<th>Price</th>
+<th>Vendor</th>
+<th>Edit</th>
+</tr>
+
+</thead>
+
+<tbody id="products"></tbody>
+
+</table>
+
+<a href="logout.html">Logout</a>
+
+<script>
+
+async function loadProducts(){
+
+const { data: userData } = await supabase.auth.getUser()
+
+const { data: creator } = await supabase
+.from("creators")
+.select("*")
+.eq("user_id",userData.user.id)
+.single()
+
+const { data: products } = await supabase
+.from("products")
+.select("*")
+.eq("creator_id",creator.id)
+
+let table = document.getElementById("products")
+
+products.forEach(function(p){
+
+let row = document.createElement("tr")
+
+row.innerHTML =
+"<td>"+p.name+"</td>"+
+"<td>"+p.price+"</td>"+
+"<td>"+p.vendor_id+"</td>"+
+"<td><a href='edit-product.html?id="+p.id+"'>Edit</a></td>"
+
+table.appendChild(row)
+
+})
+
+}
+
+loadProducts()
+
+</script>
+
+</body>
+</html>
