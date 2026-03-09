@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+<script src="supabase.js"></script>
+
+</head>
+
+<body>
+
+<script>
+
+async function logout(){
+
+await supabase.auth.signOut()
+
+window.location="login.html"
+
+}
+
+logout()
+
+</script>
+
+</body>
+</html>
